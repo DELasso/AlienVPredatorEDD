@@ -236,7 +236,6 @@ class Juego:
         node = fila.head
         for i in range(tablero.n):
             for j in range(tablero.n):
-                print(current)
                 if node is None:
                     current = current.next
                     fila = current.value
