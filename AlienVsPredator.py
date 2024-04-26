@@ -144,6 +144,7 @@ class Juego:
         movimiento_derecha = (coordenadas[0], coordenadas[1] + 1)
         movimiento_arriba = (coordenadas[0] - 1, coordenadas[1])
         movimiento_abajo = (coordenadas[0] + 1, coordenadas[1])
+
         posibles_ataques = [movimiento_arriba, movimiento_abajo, movimiento_derecha, movimiento_izquierda]
         if depredador.coordenadas[0] in posibles_ataques:
             while True:
@@ -154,25 +155,19 @@ class Juego:
                     break
                 elif atacar == "n":
                     break
+
         movimientos_disponibles = ["arriba", "abajo", "derecha", "izquierda"]
         if coordenadas[0] == 0:
             movimientos_disponibles.remove("arriba")
             if coordenadas[1] == 0:
                 movimientos_disponibles.remove("izquierda")
-            elif coordenadas[1] == tablero.n - 1:
-                movimientos_disponibles.remove("derecha")
         if coordenadas[0] == tablero.n - 1:
             movimientos_disponibles.remove("abajo")
             if coordenadas[1] == 0:
                 movimientos_disponibles.remove("izquierda")
-            elif coordenadas[1] == tablero.n - 1:
-                movimientos_disponibles.remove("derecha")
         if coordenadas[1] == 0:
             if "izquierda" in movimientos_disponibles:
                 movimientos_disponibles.remove("izquierda")
-        if coordenadas[1] == tablero.n - 1:
-            if "derecha" in movimientos_disponibles:
-                movimientos_disponibles.remove("derecha")
         print("Ingrese el movimiento que desea realizar: ", end="")
         for i, movimiento in enumerate(movimientos_disponibles):
             if i == len(movimientos_disponibles) - 1:
@@ -180,6 +175,7 @@ class Juego:
             else:
                 print(movimiento, end=", ")
         print()
+
         while True:
             nuevo_mov = input().lower()
             if nuevo_mov not in movimientos_disponibles:
@@ -191,11 +187,15 @@ class Juego:
                 direccion = movimiento_abajo
                 break
             elif nuevo_mov == "derecha":
-                direccion = movimiento_derecha
+                if coordenadas[1] == tablero.n - 1:
+                    direccion = (coordenadas[0], 0)
+                else:
+                    direccion = movimiento_derecha
                 break
             elif nuevo_mov == "izquierda":
                 direccion = movimiento_izquierda
                 break
+
         print("Tu direccion de movimiento es ", nuevo_mov, ", con coordenadas ", direccion)
         self.mover_alien(direccion, alien)
 
@@ -236,6 +236,7 @@ class Juego:
         node = fila.head
         for i in range(tablero.n):
             for j in range(tablero.n):
+                print(current)
                 if node is None:
                     current = current.next
                     fila = current.value
